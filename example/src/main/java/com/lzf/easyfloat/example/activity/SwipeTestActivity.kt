@@ -3,7 +3,7 @@ package com.lzf.easyfloat.example.activity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MotionEvent
-import android.widget.*
+import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.lzf.easyfloat.EasyFloat
 import com.lzf.easyfloat.enums.ShowPattern
@@ -13,7 +13,6 @@ import com.lzf.easyfloat.interfaces.OnTouchRangeListener
 import com.lzf.easyfloat.permission.PermissionUtils
 import com.lzf.easyfloat.utils.DragUtils
 import com.lzf.easyfloat.widget.BaseSwitchView
-import kotlinx.android.synthetic.main.activity_swipe_test.*
 
 /**
  * @author: liuzhenfeng
@@ -33,12 +32,6 @@ class SwipeTestActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_swipe_test)
 
-    }
-
-    override fun isSupportSwipeBack(): Boolean = true
-
-    override fun onSwipeBackLayoutExecuted() {
-        if (!noPermission) bgaSwipeBackHelper.swipeBackward()
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
@@ -73,7 +66,7 @@ class SwipeTestActivity : BaseActivity() {
         }
         .registerCallback {
             createResult { _, _, _ ->
-                if (noPermission && !this@SwipeTestActivity.isFinishing) bgaSwipeBackHelper.swipeBackward()
+                if (noPermission && !this@SwipeTestActivity.isFinishing) finish()
             }
 
             drag { view, event ->

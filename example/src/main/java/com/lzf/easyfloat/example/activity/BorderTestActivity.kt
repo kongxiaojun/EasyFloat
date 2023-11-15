@@ -7,7 +7,7 @@ import android.widget.ImageView
 import com.lzf.easyfloat.EasyFloat
 import com.lzf.easyfloat.enums.SidePattern
 import com.lzf.easyfloat.example.R
-import kotlinx.android.synthetic.main.activity_border_test.*
+import com.lzf.easyfloat.example.databinding.ActivityBorderTestBinding
 
 /**
  * @author: liuzhenfeng
@@ -19,12 +19,15 @@ class BorderTestActivity : BaseActivity() {
 
     private val tag = "borderTest"
 
+    private lateinit var binding: ActivityBorderTestBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_border_test)
+        binding = ActivityBorderTestBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tv_show.setOnClickListener { showBorderTest() }
-        tv_dismiss.setOnClickListener { EasyFloat.dismiss(tag) }
+        binding.tvShow.setOnClickListener { showBorderTest() }
+        binding.tvDismiss.setOnClickListener { EasyFloat.dismiss(tag) }
     }
 
     private fun showBorderTest() {
@@ -44,7 +47,7 @@ class BorderTestActivity : BaseActivity() {
                     EasyFloat.updateFloat(tag)
                 }
             }
-            .setBorder(view_bg.left, view_bg.top, view_bg.right, view_bg.bottom)
+            .setBorder(binding.viewBg.left, binding.viewBg.top, binding.viewBg.right, binding.viewBg.bottom)
             .setGravity(Gravity.CENTER)
             .setSidePattern(SidePattern.RESULT_SIDE)
             .show()

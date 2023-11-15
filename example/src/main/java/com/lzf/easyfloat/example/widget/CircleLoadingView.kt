@@ -125,14 +125,14 @@ class CircleLoadingView @JvmOverloads constructor(
                 invalidate()
             }
             addListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(p0: Animator?) {
+                override fun onAnimationRepeat(p0: Animator) {
                     dotRotateStandard += dotAngle
                     if (dotRotateStandard >= 360f) dotRotateStandard -= 360f
                 }
 
-                override fun onAnimationEnd(p0: Animator?) {}
-                override fun onAnimationCancel(p0: Animator?) {}
-                override fun onAnimationStart(p0: Animator?) {}
+                override fun onAnimationEnd(p0: Animator) {}
+                override fun onAnimationCancel(p0: Animator) {}
+                override fun onAnimationStart(p0: Animator) {}
             })
             start()
         }

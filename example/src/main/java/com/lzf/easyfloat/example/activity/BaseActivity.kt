@@ -10,7 +10,6 @@ import android.view.MotionEvent
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper
 import com.lzf.easyfloat.EasyFloat
 import com.lzf.easyfloat.enums.ShowPattern
 import com.lzf.easyfloat.example.R
@@ -24,9 +23,8 @@ import com.lzf.easyfloat.widget.BaseSwitchView
  * @Package: com.lzf.easyfloat.example.activity
  * @Description:
  */
-open class BaseActivity : AppCompatActivity(), BGASwipeBackHelper.Delegate {
+open class BaseActivity : AppCompatActivity() {
 
-    lateinit var bgaSwipeBackHelper: BGASwipeBackHelper
     private lateinit var vibrator: Vibrator
     private var vibrating = false
     var slideOffset = 0f
@@ -35,25 +33,6 @@ open class BaseActivity : AppCompatActivity(), BGASwipeBackHelper.Delegate {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        bgaSwipeBackHelper = BGASwipeBackHelper(this, this)
-    }
-
-    override fun isSupportSwipeBack(): Boolean = false
-
-    override fun onSwipeBackLayoutSlide(slideOffset: Float) {
-        this.slideOffset = slideOffset
-    }
-
-    override fun onSwipeBackLayoutCancel() {}
-
-    override fun onSwipeBackLayoutExecuted() {
-        bgaSwipeBackHelper.swipeBackward()
-    }
-
-    override fun onBackPressed() {
-        // 正在滑动返回的时候取消返回按钮事件
-        if (bgaSwipeBackHelper.isSliding) return
-        bgaSwipeBackHelper.backward()
     }
 
     @SuppressLint("MissingPermission")

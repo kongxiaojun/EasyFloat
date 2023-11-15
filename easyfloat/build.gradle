@@ -1,17 +1,13 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.princekin-f'
 
 android {
-    compileSdkVersion 29
+    compileSdk 33
 
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
 
         // aar 打包混淆配置
         consumerProguardFiles "proguard-rules.pro"
@@ -28,11 +24,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:$kotlin_version"))
 }
 repositories {
     mavenCentral()

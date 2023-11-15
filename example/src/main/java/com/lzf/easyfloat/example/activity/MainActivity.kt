@@ -11,6 +11,7 @@ import com.lzf.easyfloat.EasyFloat
 import com.lzf.easyfloat.enums.ShowPattern
 import com.lzf.easyfloat.enums.SidePattern
 import com.lzf.easyfloat.example.R
+import com.lzf.easyfloat.example.databinding.ActivityMainBinding
 import com.lzf.easyfloat.example.logger
 import com.lzf.easyfloat.example.startActivity
 import com.lzf.easyfloat.example.widget.*
@@ -19,7 +20,6 @@ import com.lzf.easyfloat.interfaces.OnTouchRangeListener
 import com.lzf.easyfloat.permission.PermissionUtils
 import com.lzf.easyfloat.utils.DragUtils
 import com.lzf.easyfloat.widget.BaseSwitchView
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.max
 
 
@@ -32,33 +32,36 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         private const val TAG_4 = "TAG_4"
     }
 
+    private lateinit var binding:ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        open1.setOnClickListener(this)
-        open2.setOnClickListener(this)
-        open3.setOnClickListener(this)
-        open4.setOnClickListener(this)
+        binding.open1.setOnClickListener(this)
+        binding.open2.setOnClickListener(this)
+        binding.open3.setOnClickListener(this)
+        binding.open4.setOnClickListener(this)
 
-        hide1.setOnClickListener(this)
-        hide2.setOnClickListener(this)
-        hide3.setOnClickListener(this)
-        hide4.setOnClickListener(this)
+        binding.hide1.setOnClickListener(this)
+        binding.hide2.setOnClickListener(this)
+        binding.hide3.setOnClickListener(this)
+        binding.hide4.setOnClickListener(this)
 
-        show1.setOnClickListener(this)
-        show2.setOnClickListener(this)
-        show3.setOnClickListener(this)
-        show4.setOnClickListener(this)
+        binding.show1.setOnClickListener(this)
+        binding.show2.setOnClickListener(this)
+        binding.show3.setOnClickListener(this)
+        binding.show4.setOnClickListener(this)
 
-        dismiss1.setOnClickListener(this)
-        dismiss2.setOnClickListener(this)
-        dismiss3.setOnClickListener(this)
-        dismiss4.setOnClickListener(this)
+        binding.dismiss1.setOnClickListener(this)
+        binding.dismiss2.setOnClickListener(this)
+        binding.dismiss3.setOnClickListener(this)
+        binding.dismiss4.setOnClickListener(this)
 
-        openSecond.setOnClickListener(this)
-        openSwipeTest.setOnClickListener(this)
-        openBorderTest.setOnClickListener(this)
+        binding.openSecond.setOnClickListener(this)
+        binding.openSwipeTest.setOnClickListener(this)
+        binding.openBorderTest.setOnClickListener(this)
 
         // 测试activity中onCreate就启动浮框
 //        showActivityFloat(TAG_1)
@@ -66,30 +69,30 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v) {
-            open1 -> showActivityFloat(TAG_1)
-            hide1 -> EasyFloat.hide(TAG_1)
-            show1 -> EasyFloat.show(TAG_1)
-            dismiss1 -> EasyFloat.dismiss(TAG_1)
+            binding.open1 -> showActivityFloat(TAG_1)
+            binding.hide1 -> EasyFloat.hide(TAG_1)
+            binding.show1 -> EasyFloat.show(TAG_1)
+            binding.dismiss1 -> EasyFloat.dismiss(TAG_1)
 
-            open2 -> showActivity2(TAG_2)
-            hide2 -> EasyFloat.hide(TAG_2)
-            show2 -> EasyFloat.show(TAG_2)
-            dismiss2 -> EasyFloat.dismiss(TAG_2)
+            binding.open2 -> showActivity2(TAG_2)
+            binding.hide2 -> EasyFloat.hide(TAG_2)
+            binding.show2 -> EasyFloat.show(TAG_2)
+            binding.dismiss2 -> EasyFloat.dismiss(TAG_2)
 
             // 检测权限根据需求考虑有无即可，权限申请为内部进行
-            open3 -> checkPermission()
-            hide3 -> EasyFloat.hide()
-            show3 -> EasyFloat.show()
-            dismiss3 -> EasyFloat.dismiss()
+            binding.open3 -> checkPermission()
+            binding.hide3 -> EasyFloat.hide()
+            binding.show3 -> EasyFloat.show()
+            binding.dismiss3 -> EasyFloat.dismiss()
 
-            open4 -> checkPermission(TAG_4)
-            hide4 -> EasyFloat.hide(TAG_4)
-            show4 -> EasyFloat.show(TAG_4)
-            dismiss4 -> EasyFloat.dismiss(TAG_4)
+            binding.open4 -> checkPermission(TAG_4)
+            binding.hide4 -> EasyFloat.hide(TAG_4)
+            binding.show4 -> EasyFloat.show(TAG_4)
+            binding.dismiss4 -> EasyFloat.dismiss(TAG_4)
 
-            openSecond -> startActivity<SecondActivity>(this)
-            openSwipeTest -> startActivity<SwipeTestActivity>(this)
-            openBorderTest -> startActivity<BorderTestActivity>(this)
+            binding.openSecond -> startActivity<SecondActivity>(this)
+            binding.openSwipeTest -> startActivity<SwipeTestActivity>(this)
+            binding.openBorderTest -> startActivity<BorderTestActivity>(this)
 
             else -> return
         }

@@ -16,16 +16,10 @@ import com.lzf.easyfloat.anim.DefaultAnimator
 import com.lzf.easyfloat.enums.ShowPattern
 import com.lzf.easyfloat.enums.SidePattern
 import com.lzf.easyfloat.example.R
+import com.lzf.easyfloat.example.databinding.ActivitySecondBinding
 import com.lzf.easyfloat.example.startActivity
-import com.lzf.easyfloat.interfaces.OnDisplayHeight
 import com.lzf.easyfloat.interfaces.OnFloatCallbacks
 import com.lzf.easyfloat.utils.DisplayUtils
-import kotlinx.android.synthetic.main.activity_second.*
-import kotlinx.android.synthetic.main.activity_second.changeBackground
-import kotlinx.android.synthetic.main.activity_second.openEditTextFloat
-import kotlinx.android.synthetic.main.activity_second.openJavaTestActivity
-import kotlinx.android.synthetic.main.activity_second.recoverBackground
-import kotlinx.android.synthetic.main.activity_third.*
 import kotlin.random.Random
 
 /**
@@ -35,11 +29,14 @@ import kotlin.random.Random
  */
 class SecondActivity : BaseActivity() {
 
+    private lateinit var binding: ActivitySecondBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_second)
+        binding = ActivitySecondBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvShow.setOnClickListener {
+        binding.tvShow.setOnClickListener {
             EasyFloat.with(this)
                 .setLayout(R.layout.float_top_dialog) {
                     it.postDelayed({ EasyFloat.dismiss(it.tag.toString()) }, 2333)
@@ -70,11 +67,11 @@ class SecondActivity : BaseActivity() {
                 .show()
         }
 
-        openEditTextFloat.setOnClickListener { showEditTextFloat() }
+        binding.openEditTextFloat.setOnClickListener { showEditTextFloat() }
 
-        openJavaTestActivity.setOnClickListener { startActivity<JavaTestActivity>(this) }
+        binding.openJavaTestActivity.setOnClickListener { startActivity<JavaTestActivity>(this) }
 
-        changeBackground.setOnClickListener {
+        binding.changeBackground.setOnClickListener {
             EasyFloat.getFloatView()?.apply {
                 findViewById<RelativeLayout>(R.id.rlContent)
                     .setBackgroundColor(ContextCompat.getColor(this@SecondActivity, R.color.violet))
@@ -83,7 +80,7 @@ class SecondActivity : BaseActivity() {
             }
         }
 
-        recoverBackground.setOnClickListener {
+        binding.recoverBackground.setOnClickListener {
             EasyFloat.getFloatView()?.findViewById<RelativeLayout>(R.id.rlContent)
                 ?.setBackgroundColor(ContextCompat.getColor(this, R.color.translucent))
         }

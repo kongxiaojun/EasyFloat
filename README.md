@@ -218,12 +218,14 @@ DragUtils.registerSwipeAdd(ev, object : OnTouchRangeListener {
 > 自带混淆规则，正常情况下无需手动导入。
 
 ## 关于感谢：
+- **感谢原项目EasyFloat：[EasyFloat](https://github.com/princekin-f/EasyFloat)**
 - **权限适配：[FloatWindowPermission](https://github.com/zhaozepeng/FloatWindowPermission)**
 
 ## 关于更新：
 - [查看版本更新日志](https://github.com/princekin-f/EasyFloat/blob/master/UpdateDoc.md)
 
 ## 交流和激励：
+- 这里放上原作者的赞助信息
 - **为了大家更好的交流和反馈，我们创建了QQ群：`818756969`**
 - 如果该库对你提供了帮助，你可以小小的赏赞一下作者，同样作者也会非常感谢你！我们一起众筹云测😘
 
