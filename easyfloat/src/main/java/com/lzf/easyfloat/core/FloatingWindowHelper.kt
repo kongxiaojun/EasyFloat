@@ -9,6 +9,7 @@ import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import android.view.*
 import android.view.WindowManager.LayoutParams.*
 import android.widget.EditText
@@ -123,14 +124,32 @@ internal class FloatingWindowHelper(val context: Context, var config: FloatConfi
             ?: LayoutInflater.from(context).inflate(config.layoutId!!, frameLayout, true)
         // 为了避免创建的时候闪一下，我们先隐藏视图，不能直接设置GONE，否则定位会出现问题
         floatingView.visibility = View.INVISIBLE
+
+        val dragView = config.dragViewId?.let { floatingView.findViewById<View>(it) }
+
         // 将frameLayout添加到系统windowManager中
         windowManager.addView(frameLayout, params)
 
-        // 通过重写frameLayout的Touch事件，实现拖拽效果
-        frameLayout?.touchListener = object : OnFloatTouchListener {
-            override fun onTouch(event: MotionEvent) =
-                touchUtils.updateFloat(frameLayout!!, event, windowManager, params)
+        if (config.dragEnable) {
+            dragView?.let {
+                it.setOnTouchListener { v, event ->
+                    Log.i("AAAAA", "dragView onTouch")
+                    val performClick = v.performClick()
+                    if (!performClick) {
+                        touchUtils.updateFloat(v, frameLayout!!, event, windowManager, params)
+                    }
+                    true
+                }
+            } ?: {
+                // 通过重写frameLayout的Touch事件，实现拖拽效果
+                frameLayout?.touchListener = object : OnFloatTouchListener {
+                    override fun onTouch(event: MotionEvent) =
+                        touchUtils.updateFloat(frameLayout!!, frameLayout!!, event, windowManager, params)
+                }
+            }
         }
+
+
 
         // 在浮窗绘制完成的时候，设置初始坐标、执行入场动画
         frameLayout?.layoutListener = object : ParentFrameLayout.OnLayoutListener {

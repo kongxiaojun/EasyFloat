@@ -275,6 +275,14 @@ class EasyFloat {
         fun setDragEnable(dragEnable: Boolean) = apply { config.dragEnable = dragEnable }
 
         /**
+         * 设置拖拽的viewid，设置后触摸此View才支持拖拽，触摸其他地方则不能拖拽
+         * @param dragViewId  拖拽的viewid，设置后触摸此View才支持拖拽，触摸其他地方则不能拖拽
+         */
+        fun setDragViewId(dragViewId: Int) = apply {
+            config.dragViewId = dragViewId
+        }
+
+        /**
          * 设置浮窗是否状态栏沉浸
          * @param immersionStatusBar    是否状态栏沉浸
          */

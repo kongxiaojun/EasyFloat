@@ -196,6 +196,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                         if (layoutContent.visibility == View.VISIBLE) View.GONE else View.VISIBLE
                 }
             }
+            .setDragViewId(R.id.ivFull)
             .show()
     }
 

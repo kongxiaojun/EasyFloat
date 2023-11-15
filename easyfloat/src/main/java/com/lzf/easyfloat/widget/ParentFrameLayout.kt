@@ -42,6 +42,7 @@ internal class ParentFrameLayout(
     }
 
     override fun onInterceptTouchEvent(event: MotionEvent?): Boolean {
+        if (config.dragViewId != null) return false
         if (event != null) touchListener?.onTouch(event)
         // 是拖拽事件就进行拦截，反之不拦截
         // ps：拦截后将不再回调该方法，会交给该view的onTouchEvent进行处理，所以后续事件需要在onTouchEvent中回调
@@ -50,6 +51,7 @@ internal class ParentFrameLayout(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (config.dragViewId != null) return false
         if (event != null) touchListener?.onTouch(event)
         return config.isDrag || super.onTouchEvent(event)
     }

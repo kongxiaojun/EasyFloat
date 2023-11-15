@@ -7,7 +7,7 @@
 
     <RelativeLayout
             android:id="@+id/layoutContent"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:background="@color/translucent"
             app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +22,13 @@
                 android:text="20"
                 android:textColor="@color/pinkRed"
                 android:textSize="20sp" />
+
+        <ImageView
+                android:id="@+id/ivFull"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_toStartOf="@+id/ivClose"
+                android:src="@drawable/icon_full" />
 
         <ImageView
                 android:id="@+id/ivClose"

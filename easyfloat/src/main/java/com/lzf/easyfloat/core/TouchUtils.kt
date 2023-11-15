@@ -58,13 +58,14 @@ internal class TouchUtils(val context: Context, val config: FloatConfig) {
      * 根据吸附模式，实现相应的拖拽效果
      */
     fun updateFloat(
-        view: View,
+        touchView: View,
+        floatView: View,
         event: MotionEvent,
         windowManager: WindowManager,
         params: LayoutParams
     ) {
-        config.callbacks?.touchEvent(view, event)
-        config.floatCallbacks?.builder?.touchEvent?.invoke(view, event)
+        config.callbacks?.touchEvent(touchView, event)
+        config.floatCallbacks?.builder?.touchEvent?.invoke(touchView, event)
         // 不可拖拽、或者正在执行动画，不做处理
         if (!config.dragEnable || config.isAnim) {
             config.isDrag = false
@@ -78,20 +79,21 @@ internal class TouchUtils(val context: Context, val config: FloatConfig) {
                 lastX = event.rawX
                 lastY = event.rawY
                 // 初始化一些边界数据
-                initBoarderValue(view, params)
+                initBoarderValue(floatView, params)
             }
 
             MotionEvent.ACTION_MOVE -> {
-                // 过滤边界值之外的拖拽
-                if (event.rawX < leftBorder || event.rawX > rightBorder + view.width
-                    || event.rawY < topBorder || event.rawY > bottomBorder + view.height
-                ) return
-
                 // 移动值 = 本次触摸值 - 上次触摸值
                 val dx = event.rawX - lastX
                 val dy = event.rawY - lastY
                 // 忽略过小的移动，防止点击无效
                 if (!config.isDrag && dx * dx + dy * dy < 81) return
+
+                // 过滤边界值之外的拖拽
+                if (touchView.x + dx < leftBorder || touchView.x + dx > rightBorder + touchView.width
+                    || touchView.y + dy < topBorder || touchView.y + dy > bottomBorder + touchView.height
+                ) return
+
                 config.isDrag = true
 
                 var x = params.x + dx.toInt()
@@ -105,8 +107,8 @@ internal class TouchUtils(val context: Context, val config: FloatConfig) {
 
                 if (config.showPattern == ShowPattern.CURRENT_ACTIVITY) {
                     // 单页面浮窗，设置状态栏不沉浸时，最小高度为状态栏高度
-                    if (y < statusBarHeight(view) && !config.immersionStatusBar) y =
-                        statusBarHeight(view)
+                    if (y < statusBarHeight(floatView) && !config.immersionStatusBar) y =
+                        statusBarHeight(floatView)
                 }
 
                 y = when {
@@ -121,16 +123,16 @@ internal class TouchUtils(val context: Context, val config: FloatConfig) {
 
                 when (config.sidePattern) {
                     SidePattern.LEFT -> x = 0
-                    SidePattern.RIGHT -> x = parentWidth - view.width
+                    SidePattern.RIGHT -> x = parentWidth - floatView.width
                     SidePattern.TOP -> y = 0
                     SidePattern.BOTTOM -> y = emptyHeight
 
                     SidePattern.AUTO_HORIZONTAL ->
-                        x = if (event.rawX * 2 > parentWidth) parentWidth - view.width else 0
+                        x = if (event.rawX * 2 > parentWidth) parentWidth - floatView.width else 0
 
                     SidePattern.AUTO_VERTICAL ->
                         y = if ((event.rawY - parentRect.top) * 2 > parentHeight)
-                            parentHeight - view.height else 0
+                            parentHeight - floatView.height else 0
 
                     SidePattern.AUTO_SIDE -> {
                         leftDistance = event.rawX.toInt()
@@ -141,7 +143,7 @@ internal class TouchUtils(val context: Context, val config: FloatConfig) {
                         minX = min(leftDistance, rightDistance)
                         minY = min(topDistance, bottomDistance)
                         if (minX < minY) {
-                            x = if (leftDistance == minX) 0 else parentWidth - view.width
+                            x = if (leftDistance == minX) 0 else parentWidth - floatView.width
                         } else {
                             y = if (topDistance == minY) 0 else emptyHeight
                         }
@@ -153,9 +155,9 @@ internal class TouchUtils(val context: Context, val config: FloatConfig) {
                 // 重新设置坐标信息
                 params.x = x
                 params.y = y
-                windowManager.updateViewLayout(view, params)
-                config.callbacks?.drag(view, event)
-                config.floatCallbacks?.builder?.drag?.invoke(view, event)
+                windowManager.updateViewLayout(floatView, params)
+                config.callbacks?.drag(touchView, event)
+                config.floatCallbacks?.builder?.drag?.invoke(touchView, event)
                 // 更新上次触摸点的数据
                 lastX = event.rawX
                 lastY = event.rawY
@@ -164,8 +166,8 @@ internal class TouchUtils(val context: Context, val config: FloatConfig) {
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 if (!config.isDrag) return
                 // 回调拖拽事件的ACTION_UP
-                config.callbacks?.drag(view, event)
-                config.floatCallbacks?.builder?.drag?.invoke(view, event)
+                config.callbacks?.drag(touchView, event)
+                config.floatCallbacks?.builder?.drag?.invoke(touchView, event)
                 when (config.sidePattern) {
                     SidePattern.RESULT_LEFT,
                     SidePattern.RESULT_RIGHT,
@@ -173,10 +175,10 @@ internal class TouchUtils(val context: Context, val config: FloatConfig) {
                     SidePattern.RESULT_BOTTOM,
                     SidePattern.RESULT_HORIZONTAL,
                     SidePattern.RESULT_VERTICAL,
-                    SidePattern.RESULT_SIDE -> sideAnim(view, params, windowManager)
+                    SidePattern.RESULT_SIDE -> sideAnim(floatView, params, windowManager)
                     else -> {
-                        config.callbacks?.dragEnd(view)
-                        config.floatCallbacks?.builder?.dragEnd?.invoke(view)
+                        config.callbacks?.dragEnd(touchView)
+                        config.floatCallbacks?.builder?.dragEnd?.invoke(touchView)
                     }
                 }
             }
