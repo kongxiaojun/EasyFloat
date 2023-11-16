@@ -1,4 +1,9 @@
 ## 版本更新日志
+
+#### v 3.0.0:
+- 升级kotlin版本至1.7.21
+- 支持设置拖拽的viewid，设置后触摸此View才支持拖拽，触摸其他地方则不能拖拽
+
 #### v 2.0.4:
 - [修复延迟初始化单页面浮窗导致的一系列问题](https://github.com/princekin-f/EasyFloat/issues/173)；
 - [修复悬浮窗设置动画为空报错的问题](https://github.com/princekin-f/EasyFloat/issues/185)；

@@ -20,16 +20,14 @@
 
 |权限申请|系统浮窗|前台和过滤|
 |:---:|:---:|:---:|
-|![](https://github.com/princekin-f/EasyFloat/blob/master/readme/%E6%9D%83%E9%99%90%E7%94%B3%E8%AF%B7.gif)|![](https://github.com/princekin-f/EasyFloat/blob/master/readme/%E7%B3%BB%E7%BB%9F%E6%B5%AE%E7%AA%97.gif)|![](https://github.com/princekin-f/EasyFloat/blob/master/readme/%E6%B5%AE%E7%AA%97%E7%BC%A9%E6%94%BE.gif)|
+|![](https://github.com/kongxiaojun/EasyFloat/blob/master/readme/%E6%9D%83%E9%99%90%E7%94%B3%E8%AF%B7.gif)|![](https://github.com/kongxiaojun/EasyFloat/blob/master/readme/%E7%B3%BB%E7%BB%9F%E6%B5%AE%E7%AA%97.gif)|![](https://github.com/kongxiaojun/EasyFloat/blob/master/readme/%E6%B5%AE%E7%AA%97%E7%BC%A9%E6%94%BE.gif)|
 
 |状态回调|拖拽边界|拓展使用|
 |:---:|:---:|:---:|
-|![](https://github.com/princekin-f/EasyFloat/blob/master/readme/Callbacks.gif)|![](https://github.com/princekin-f/EasyFloat/blob/master/readme/BoarderAndSlide.gif)|![](https://github.com/princekin-f/EasyFloat/blob/master/readme/DragUtils.gif)|
+|![](https://github.com/kongxiaojun/EasyFloat/blob/master/readme/Callbacks.gif)|![](https://github.com/kongxiaojun/EasyFloat/blob/master/readme/BoarderAndSlide.gif)|![](https://github.com/kongxiaojun/EasyFloat/blob/master/readme/DragUtils.gif)|
 
 ## 下载体验：
-- [直接下载测试APK](http://fir.zsc7454.cn/qgp2)，或者扫码下载：
-
-![](https://github.com/princekin-f/EasyFloat/blob/master/readme/downloadImage.png)
+- [直接下载测试APK](https://github.com/kongxiaojun/EasyFloat/raw/master/example/release/EasyFloat.apk)
 
 ## 关于集成：
 - **在项目的根目录的`build.gradle`添加：**
@@ -54,7 +52,6 @@ dependencies {
     implementation 'com.github.princekin-f:EasyFloat:1.3.4'
 }
 ```
-[老版本 v1.3.4 使用文档](https://github.com/princekin-f/EasyFloat/blob/master/readme/README_1.3.4.md)
 
 ## 一行代码搞定Android浮窗，浮窗从未如此简单：
 ```
@@ -62,7 +59,7 @@ EasyFloat.with(this).setLayout(R.layout.float_test).show()
 ```
 
 ## 关于初始化：
-> 2.0.0开始，无需初始化
+> 无需初始化
 
 
 ## 关于权限声明：
@@ -224,17 +221,15 @@ DragUtils.registerSwipeAdd(ev, object : OnTouchRangeListener {
 - **权限适配：[FloatWindowPermission](https://github.com/zhaozepeng/FloatWindowPermission)**
 
 ## 关于更新：
-- [查看版本更新日志](https://github.com/princekin-f/EasyFloat/blob/master/UpdateDoc.md)
+- [查看版本更新日志](https://github.com/kongxiaojun/EasyFloat/blob/master/UpdateDoc.md)
 
 ## 交流和激励：
 - 这里放上原作者的赞助信息
-- **为了大家更好的交流和反馈，我们创建了QQ群：`818756969`**
 - 如果该库对你提供了帮助，你可以小小的赏赞一下作者，同样作者也会非常感谢你！我们一起众筹云测😘
 
 <div align="center">
-<img src="https://github.com/princekin-f/EasyFloat/blob/master/readme/EasyFloatGroup.jpeg"  width="266">
-<img src="https://github.com/princekin-f/EasyFloat/blob/master/readme/Alipay.jpeg" width="266">
-<img src="https://github.com/princekin-f/EasyFloat/blob/master/readme/WeChatPay.jpeg" width="266" >
+<img src="https://github.com/kongxiaojun/EasyFloat/blob/master/readme/Alipay.jpeg" width="266">
+<img src="https://github.com/kongxiaojun/EasyFloat/blob/master/readme/WeChatPay.jpeg" width="266" >
 </div>
 
 
