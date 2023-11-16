@@ -56,7 +56,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test:runner:1.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation project(path: ':easyfloat')
+    implementation project(path: ':library')
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
 }
