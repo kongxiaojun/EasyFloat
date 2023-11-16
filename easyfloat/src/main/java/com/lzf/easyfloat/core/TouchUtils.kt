@@ -89,11 +89,6 @@ internal class TouchUtils(val context: Context, val config: FloatConfig) {
                 // 忽略过小的移动，防止点击无效
                 if (!config.isDrag && dx * dx + dy * dy < 81) return
 
-                // 过滤边界值之外的拖拽
-                if (touchView.x + dx < leftBorder || touchView.x + dx > rightBorder + touchView.width
-                    || touchView.y + dy < topBorder || touchView.y + dy > bottomBorder + touchView.height
-                ) return
-
                 config.isDrag = true
 
                 var x = params.x + dx.toInt()
