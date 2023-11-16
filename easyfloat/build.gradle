@@ -1,6 +1,8 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-group = 'com.github.princekin-f'
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+}
 
 android {
     compileSdk 33
@@ -32,9 +34,21 @@ android {
     }
 }
 
-dependencies {
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:$kotlin_version"))
-}
-repositories {
-    mavenCentral()
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.kongxiaojun'
+                artifactId = 'EasyFloat'
+                version = '3.0'
+            }
+            debug(MavenPublication) {
+                from components.debug
+                groupId = 'com.github.kongxiaojun'
+                artifactId = 'EasyFloat'
+                version = '3.0'
+            }
+        }
+    }
 }

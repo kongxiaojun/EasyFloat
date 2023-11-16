@@ -86,6 +86,8 @@ EasyFloat.with(this)
     .setTag("testFloat")
     // 设置浮窗是否可拖拽
     .setDragEnable(true)
+    // 设置拖拽的viewid，设置后触摸此View才支持拖拽，触摸其他地方则不能拖拽
+    .setDragViewId(R.id.ivFull)
     // 浮窗是否包含EditText，默认不包含
     .hasEditText(false)
     // 设置浮窗固定坐标，ps：设置固定坐标，Gravity属性和offset属性将无效
