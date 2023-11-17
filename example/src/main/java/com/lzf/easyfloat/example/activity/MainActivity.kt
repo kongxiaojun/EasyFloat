@@ -207,6 +207,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             .setImmersionStatusBar(true)
             .setGravity(Gravity.CENTER, -20, 10)
             .setDragEnable(true)
+            .setPermissionRequester {
+                PermissionUtils.requestPermission(this@MainActivity, it)
+            }
             .setLayout(R.layout.float_app) {
                 it.findViewById<ImageView>(R.id.ivClose).setOnClickListener {
                     EasyFloat.dismiss()

@@ -1,57 +1,58 @@
 package com.lzf.easyfloat.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import com.lzf.easyfloat.core.FloatingWindowManager
 import com.lzf.easyfloat.enums.ShowPattern
-import java.lang.ref.WeakReference
 
 /**
  * @author: liuzhenfeng
  * @function: 通过生命周期回调，判断系统浮窗的过滤信息，以及app是否位于前台，控制浮窗显隐
  * @date: 2019-07-11  15:51
  */
+@SuppressLint("StaticFieldLeak")
 internal object LifecycleUtils {
 
     lateinit var application: Application
     private var activityCount = 0
-    private var mTopActivity: WeakReference<Activity>? = null
-
-    fun getTopActivity(): Activity? = mTopActivity?.get()
+    var topActivity: Activity? = null
+        private set
 
     fun setLifecycleCallbacks(application: Application) {
         this.application = application
         application.registerActivityLifecycleCallbacks(object :
             Application.ActivityLifecycleCallbacks {
 
-            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                topActivity = activity
+            }
 
             override fun onActivityStarted(activity: Activity) {
                 // 计算启动的activity数目
-                activity?.let { activityCount++ }
+                activityCount++
             }
 
             override fun onActivityResumed(activity: Activity) {
-                activity?.let {
-                    mTopActivity?.clear()
-                    mTopActivity = WeakReference<Activity>(it)
-                    // 每次都要判断当前页面是否需要显示
-                    checkShow(it)
-                }
+                // 每次都要判断当前页面是否需要显示
+                checkShow(activity)
             }
 
             override fun onActivityPaused(activity: Activity) {}
 
             override fun onActivityStopped(activity: Activity) {
-                activity?.let {
-                    // 计算关闭的activity数目，并判断当前App是否处于后台
-                    activityCount--
-                    checkHide(it)
-                }
+                // 计算关闭的activity数目，并判断当前App是否处于后台
+                activityCount--
+                checkHide(activity)
             }
 
-            override fun onActivityDestroyed(activity: Activity) {}
+            @SuppressLint("StaticFieldLeak")
+            override fun onActivityDestroyed(activity: Activity) {
+                if (activity == topActivity) {
+                    topActivity = null
+                }
+            }
 
             override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
         })

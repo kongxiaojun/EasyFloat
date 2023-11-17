@@ -7,14 +7,17 @@ import com.lzf.easyfloat.core.FloatingWindowManager
 import com.lzf.easyfloat.data.FloatConfig
 import com.lzf.easyfloat.enums.ShowPattern
 import com.lzf.easyfloat.enums.SidePattern
-import com.lzf.easyfloat.interfaces.*
-import com.lzf.easyfloat.interfaces.OnPermissionResult
-import com.lzf.easyfloat.permission.PermissionUtils
-import com.lzf.easyfloat.utils.LifecycleUtils
 import com.lzf.easyfloat.interfaces.FloatCallbacks
+import com.lzf.easyfloat.interfaces.OnDisplayHeight
+import com.lzf.easyfloat.interfaces.OnFloatAnimator
+import com.lzf.easyfloat.interfaces.OnFloatCallbacks
+import com.lzf.easyfloat.interfaces.OnInvokeView
+import com.lzf.easyfloat.interfaces.OnPermissionResult
+import com.lzf.easyfloat.interfaces.PermissionRequester
+import com.lzf.easyfloat.permission.PermissionUtils
 import com.lzf.easyfloat.utils.DisplayUtils
+import com.lzf.easyfloat.utils.LifecycleUtils
 import com.lzf.easyfloat.utils.Logger
-import java.lang.Exception
 
 /**
  * @author: liuzhenfeng
@@ -28,12 +31,11 @@ class EasyFloat {
 
         /**
          * 通过上下文，创建浮窗的构建者信息，使浮窗拥有一些默认属性
-         * @param activity  上下文信息，优先使用Activity上下文，因为系统浮窗权限的自动申请，需要使用Activity信息
+         * @param context  上下文信息
          * @return  浮窗属性构建者
          */
         @JvmStatic
-        fun with(activity: Context): Builder = if (activity is Activity) Builder(activity)
-        else Builder(LifecycleUtils.getTopActivity() ?: activity)
+        fun with(context: Context): Builder = Builder(context.applicationContext)
 
         /**
          * 关闭当前浮窗
@@ -146,7 +148,7 @@ class EasyFloat {
         @JvmStatic
         @JvmOverloads
         fun removeFilters(tag: String? = null, vararg clazz: Class<*>) =
-            getFilterSet(tag)?.removeAll(clazz.map { it.name })
+            getFilterSet(tag)?.removeAll(clazz.map { it.name }.toSet())
 
         /**
          * 清除当前浮窗的所有过滤信息
@@ -173,7 +175,7 @@ class EasyFloat {
     /**
      * 浮窗的属性构建类，支持链式调用
      */
-    class Builder(private val activity: Context) : OnPermissionResult {
+    class Builder(private val context: Context) : OnPermissionResult {
 
         // 创建浮窗数据类，方便管理配置
         private val config = FloatConfig()
@@ -251,9 +253,9 @@ class EasyFloat {
         @JvmOverloads
         fun setBorder(
             left: Int = 0,
-            top: Int = -DisplayUtils.getStatusBarHeight(activity),
-            right: Int = DisplayUtils.getScreenWidth(activity),
-            bottom: Int = DisplayUtils.getScreenHeight(activity)
+            top: Int = -DisplayUtils.getStatusBarHeight(context),
+            right: Int = DisplayUtils.getScreenWidth(context),
+            bottom: Int = DisplayUtils.getScreenHeight(context)
         ) = apply {
             config.leftBorder = left
             config.topBorder = top
@@ -340,9 +342,25 @@ class EasyFloat {
         fun setFilter(vararg clazz: Class<*>) = apply {
             clazz.forEach {
                 config.filterSet.add(it.name)
-                if (activity is Activity) {
-                    // 过滤掉当前Activity
-                    if (it.name == activity.componentName.className) config.filterSelf = true
+            }
+        }
+
+        /**
+         * 设置权限申请器，当需要申请悬浮窗权限时优先使用此权限申请器，满足合规和自定义权限弹窗需求
+         * @param permissionRequester 权限申请器
+         */
+        fun setPermissionRequester(permissionRequester: PermissionRequester) = apply {
+            config.permissionRequester = permissionRequester
+        }
+
+        /**
+         * 设置权限申请器，当需要申请悬浮窗权限时优先使用此权限申请器，满足合规和自定义权限弹窗需求
+         * @param permissionRequester 权限申请器
+         */
+        fun setPermissionRequester(permissionRequester: (OnPermissionResult) -> Unit) = apply {
+            config.permissionRequester = object : PermissionRequester {
+                override fun requestPermission(resultCallback: OnPermissionResult) {
+                    permissionRequester.invoke(resultCallback)
                 }
             }
         }
@@ -357,7 +375,7 @@ class EasyFloat {
             // 仅当页显示，则直接创建activity浮窗
             config.showPattern == ShowPattern.CURRENT_ACTIVITY -> createFloat()
             // 系统浮窗需要先进行权限审核，有权限则创建app浮窗
-            PermissionUtils.checkPermission(activity) -> createFloat()
+            PermissionUtils.checkPermission(context) -> createFloat()
             // 申请浮窗权限
             else -> requestPermission()
         }
@@ -365,14 +383,17 @@ class EasyFloat {
         /**
          * 通过浮窗管理类，统一创建浮窗
          */
-        private fun createFloat() = FloatingWindowManager.create(activity, config)
+        private fun createFloat() = FloatingWindowManager.create(context, config)
 
         /**
          * 通过Fragment去申请系统悬浮窗权限
          */
         private fun requestPermission() =
-            if (activity is Activity) PermissionUtils.requestPermission(activity, this)
-            else callbackCreateFailed(WARN_CONTEXT_REQUEST)
+            config.permissionRequester?.requestPermission(this) ?: LifecycleUtils.topActivity
+                ?.let { PermissionUtils.requestPermission(it, this) } ?: callbackCreateFailed(
+                WARN_CONTEXT_REQUEST
+            )
+
 
         /**
          * 申请浮窗权限的结果回调

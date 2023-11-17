@@ -75,16 +75,7 @@ object PermissionUtils {
      */
     private fun commonROMPermissionCheck(context: Context): Boolean =
         if (RomUtils.checkIsMeizuRom()) meizuPermissionCheck(context) else {
-            var result = true
-            if (Build.VERSION.SDK_INT >= 23) try {
-                val clazz = Settings::class.java
-                val canDrawOverlays =
-                    clazz.getDeclaredMethod("canDrawOverlays", Context::class.java)
-                result = canDrawOverlays.invoke(null, context) as Boolean
-            } catch (e: Exception) {
-                Log.e(TAG, Log.getStackTraceString(e))
-            }
-            result
+            if (Build.VERSION.SDK_INT >= 23) Settings.canDrawOverlays(context) else true
         }
 
     /**

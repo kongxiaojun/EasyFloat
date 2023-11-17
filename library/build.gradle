@@ -41,13 +41,13 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.kongxiaojun'
                 artifactId = 'EasyFloat'
-                version = '3.0'
+                version = '3.0.1'
             }
             debug(MavenPublication) {
                 from components.debug
                 groupId = 'com.github.kongxiaojun'
                 artifactId = 'EasyFloat'
-                version = '3.0'
+                version = '3.0.1'
             }
         }
     }

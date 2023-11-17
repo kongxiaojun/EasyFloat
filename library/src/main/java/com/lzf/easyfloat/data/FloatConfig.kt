@@ -73,8 +73,6 @@ data class FloatConfig(
 
     // 不需要显示系统浮窗的页面集合，参数为类名
     val filterSet: MutableSet<String> = mutableSetOf(),
-    // 是否设置，当前创建的页面也被过滤
-    internal var filterSelf: Boolean = false,
     // 是否需要显示，当过滤信息匹配上时，该值为false（用户手动调用隐藏，该值也为false，相当于手动过滤）
     internal var needShow: Boolean = true,
 
@@ -82,5 +80,8 @@ data class FloatConfig(
     var layoutChangedGravity: Int = Gravity.TOP.or(Gravity.START),
 
     // 支持拖拽的viewid，设置后触摸此View才支持拖拽，触摸其他地方则不能拖拽
-    var dragViewId: Int? = null
+    var dragViewId: Int? = null,
+
+    // 权限申请器，实现后优先使用此申请器申请权限，满足用户的合规需求和自定义需求
+    var permissionRequester: PermissionRequester? = null
 )

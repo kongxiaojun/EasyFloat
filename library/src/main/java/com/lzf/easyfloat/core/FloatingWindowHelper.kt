@@ -2,7 +2,6 @@ package com.lzf.easyfloat.core
 
 import android.animation.Animator
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Service
 import android.content.Context
 import android.graphics.PixelFormat
@@ -103,8 +102,7 @@ internal class FloatingWindowHelper(val context: Context, var config: FloatConfi
         }
     }
 
-    private fun getActivity() =
-        if (context is Activity) context else LifecycleUtils.getTopActivity()
+    private fun getActivity() = LifecycleUtils.topActivity
 
     private fun getToken(): IBinder? = getActivity()?.window?.decorView?.windowToken
 
@@ -153,7 +151,7 @@ internal class FloatingWindowHelper(val context: Context, var config: FloatConfi
                 lastLayoutMeasureHeight = frameLayout?.measuredHeight ?: -1
                 config.apply {
                     // 如果设置了过滤当前页，或者后台显示前台创建、前台显示后台创建，隐藏浮窗，否则执行入场动画
-                    if (filterSelf
+                    if (this.filterSet.contains(LifecycleUtils.topActivity?.componentName?.className)
                         || (showPattern == ShowPattern.BACKGROUND && LifecycleUtils.isForeground())
                         || (showPattern == ShowPattern.FOREGROUND && !LifecycleUtils.isForeground())
                     ) {
