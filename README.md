@@ -215,16 +215,7 @@ DragUtils.registerSwipeAdd(ev, object : OnTouchRangeListener {
 - **权限适配：[FloatWindowPermission](https://github.com/zhaozepeng/FloatWindowPermission)**
 
 ## 关于更新：
-- [查看版本更新日志](https://github.com/kongxiaojun/EasyFloat/blob/master/UpdateDoc.md)
-
-## 交流和激励：
-- 这里放上原作者的赞助信息
-- 如果该库对你提供了帮助，你可以小小的赏赞一下作者，同样作者也会非常感谢你！我们一起众筹云测😘
-
-<div align="center">
-<img src="https://github.com/kongxiaojun/EasyFloat/blob/master/readme/Alipay.jpeg" width="266">
-<img src="https://github.com/kongxiaojun/EasyFloat/blob/master/readme/WeChatPay.jpeg" width="266" >
-</div>
+- [查看版本更新日志](https://github.com/kongxiaojun/EasyFloat/releases)
 
 
 License
